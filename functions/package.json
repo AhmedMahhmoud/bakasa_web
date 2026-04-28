@@ -1,0 +1,17 @@
+{
+  "name": "bakasa-order-functions",
+  "description": "HTTPS endpoint that emails Bakasa web orders (Firebase Cloud Functions)",
+  "main": "index.js",
+  "engines": {
+    "node": "22"
+  },
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "deploy": "firebase deploy --only functions"
+  },
+  "dependencies": {
+    "firebase-functions": "^6.3.0",
+    "nodemailer": "^6.9.16"
+  },
+  "private": true
+}
