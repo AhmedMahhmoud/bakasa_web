@@ -1,0 +1,180 @@
+{
+  "@@locale": "ar",
+
+  "appTitle": "بكاسة — لعبة الكروت",
+  "language": "اللغة",
+  "languageEnglish": "English",
+  "languageArabic": "العربية",
+  "languageShortEn": "EN",
+  "languageShortAr": "ع",
+
+  "collectorEdition": "الإصدار المحدود",
+  "productName": "لعبة بكاسة — كارد جيم",
+  "shortDescription": "لعبة الكروت الجماعية من عالم بكاسة — جولات سريعة، ضحك بلا توقف، وقواعد بسيطة يقدر أي حد يتعلمها في دقيقة واحدة.",
+  "insideTheBox": "محتويات الصندوق",
+  "boxContents": "محتويات اللعبة: ٤ كاتيجوريز مختلفة: عشوائيات، حيوانات، وظائف، وأماكن، بالإضافة إلى ١٥ كارت جوا اللعبة، و٥ كروت بره، وكارت الشرح.",
+  "priceNote": "إصدار محدود بمناسبة الإطلاق",
+  "currencyEgp": "ج.م",
+  "priceLabel": "{price} ج.م",
+  "@priceLabel": {
+    "placeholders": {
+      "price": { "type": "int" }
+    }
+  },
+  "orderNow": "اطلبها الآن",
+
+  "howToPlay": "طريقة اللعب",
+  "quickVideoGuide": "شرح سريع بالفيديو",
+  "howToPlayDescription": "اتفرّج على شرح سريع تعرف منه طريقة اللعب والأدوار وإزاي تبدأ في ثواني.",
+  "howToPlayBakasa": "إزاي تلعب بكاسة",
+  "youtube": "يوتيوب",
+
+  "connectWithUs": "تواصل معانا",
+  "joinCommunityTitle": "انضم لمجتمع بكاسة",
+  "joinCommunityDescription": "تابع كل جديد، حمّل التطبيق، وتواصل معانا مباشرة.",
+  "socialGooglePlay": "جوجل بلاي",
+  "socialAppStore": "آب ستور",
+  "socialInstagram": "إنستجرام",
+  "socialFacebook": "فيسبوك",
+  "socialTikTok": "تيك توك",
+  "emailSubjectContactUs": "بكاسة - تواصل معانا",
+
+  "placeYourOrder": "إتمام الطلب",
+  "deliveryDetailsIntro": "محتاجين شوية بيانات عشان نوصّل طلبك.",
+  "fullName": "الاسم بالكامل",
+  "validatorEnterName": "من فضلك اكتب اسمك",
+  "phoneNumber": "رقم الموبايل",
+  "phoneHint": "مثال: 01012345678",
+  "validatorEnterPhone": "من فضلك اكتب رقم موبايلك",
+  "validatorPhoneInvalid": "اكتب رقم موبايل صحيح",
+  "governorate": "المحافظة",
+  "validatorSelectGovernorate": "اختر محافظتك",
+  "city": "المدينة / المنطقة",
+  "validatorEnterCity": "من فضلك اكتب المدينة / المنطقة",
+  "streetName": "اسم الشارع",
+  "validatorEnterStreet": "من فضلك اكتب اسم الشارع",
+  "buildingNumber": "رقم العقار",
+  "floorNumber": "رقم الدور",
+  "apartmentNumber": "رقم الشقة",
+  "validatorRequired": "مطلوب",
+  "validatorEnterApartment": "من فضلك اكتب رقم الشقة",
+  "notesLandmarkOptional": "ملاحظات / علامة مميزة (اختياري)",
+  "locating": "بنحدّد موقعك…",
+  "useMyCurrentLocation": "استخدم موقعي الحالي",
+  "locationHelp": "بنستخدم GPS لاقتراح عنوان قريب كعلامة مميزة. من فضلك اكتب اسم الشارع ورقم العقار والدور والشقة بدقة.",
+  "submitOrder": "إرسال الطلب",
+
+  "errorLocationServicesOff": "فعّل خدمة الموقع عشان نقدر نستخدمها.",
+  "errorLocationPermissionRequired": "محتاجين إذن الوصول للموقع عشان نكتشف عنوانك.",
+  "errorLookupAddress": "ما قدرناش نجيب عنوانك. من فضلك اكتبه يدويًا.",
+  "errorGetLocation": "ما قدرناش نجيب الموقع: {error}",
+  "@errorGetLocation": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "errorSomethingWentWrong": "حصلت مشكلة. حاول تاني.",
+
+  "orderInfoEmailOnly": "الطلبات بتتبعت بالإيميل على {email} (SMTP داخل التطبيق على الموبايل/الكمبيوتر؛ على الويب بيتفتح برنامج الإيميل عندك). اختياري: ضبط firebaseOrderSubmitUrl لإرسالها لسيرفرك.",
+  "@orderInfoEmailOnly": {
+    "placeholders": {
+      "email": { "type": "String" }
+    }
+  },
+  "orderInfoPost": "الطلبات بتتبعت لـ URL الـ POST المضبوط؛ وممكن نسخة كمان تتبعت على {email}.",
+  "@orderInfoPost": {
+    "placeholders": {
+      "email": { "type": "String" }
+    }
+  },
+
+  "promoCode": "كود الخصم",
+  "promoCodeIntro": "عندك كود من شريك؟ طبّقه قبل ما تبعت الطلب — هنتحقق منه فورًا.",
+  "enterYourPromoCode": "اكتب كود الخصم",
+  "apply": "تطبيق",
+  "appliedLabel": "مُفعّل: ",
+  "percentOff": "خصم {percent}%",
+  "@percentOff": {
+    "placeholders": {
+      "percent": { "type": "int" }
+    }
+  },
+  "remove": "إزالة",
+  "collectorBoxPrice": "الصندوق · السعر",
+  "promoNoPercent": "الكود مُفعّل — لكن مفيش نسبة خصم، فالسعر هو الأساسي.",
+  "youSave": "وفّرت {amount} {currency} · خصم {percent}% ({code}).",
+  "@youSave": {
+    "placeholders": {
+      "currency": { "type": "String" },
+      "amount": { "type": "int" },
+      "percent": { "type": "int" },
+      "code": { "type": "String" }
+    }
+  },
+  "percentOffApplied": "تم تفعيل خصم {percent}% ({code}).",
+  "@percentOffApplied": {
+    "placeholders": {
+      "percent": { "type": "int" },
+      "code": { "type": "String" }
+    }
+  },
+  "promoErrorEmpty": "اكتب كود أو سيب الخانة دي فاضية.",
+  "promoErrorEnter": "اكتب كود خصم",
+  "promoErrorCouldNotApply": "ما قدرناش نفعّل الكود ده.",
+  "promoErrorNotValid": "الكود ده مش صحيح.",
+  "promoErrorNotActive": "الكود ده مش مُفعّل دلوقتي.",
+  "promoErrorExpired": "الكود ده انتهى (تم استخدامه بالكامل).",
+  "promoErrorTooLong": "الكود طويل جدًا.",
+  "promoErrorNeedsFirebase": "أكواد الخصم محتاجة Firebase. افتح نسخة الويب من التطبيق.",
+  "promoErrorValidation": "ما قدرناش نتحقق من الكود ({code}). حاول تاني.",
+  "@promoErrorValidation": {
+    "placeholders": {
+      "code": { "type": "String" }
+    }
+  },
+
+  "orderTotal": "إجمالي الطلب",
+  "item": "المنتج",
+  "delivery": "التوصيل",
+  "selectGovernorateShort": "اختر المحافظة",
+  "total": "الإجمالي",
+  "currencyAmount": "{amount} {currency}",
+  "@currencyAmount": {
+    "placeholders": {
+      "currency": { "type": "String" },
+      "amount": { "type": "int" }
+    }
+  },
+
+  "orderReceived": "تم استلام طلبك!",
+  "orderReceivedDescription": "شكرًا لاختيارك بكاسة. فريقنا هيتواصل معاك قريب جدًا لتأكيد الطلب وتفاصيل التوصيل.",
+  "backToProduct": "الرجوع للمنتج",
+
+  "governorateIsmailia": "الإسماعيلية",
+  "governorateAswan": "أسوان",
+  "governorateLuxor": "الأقصر",
+  "governorateAlexandria": "الإسكندرية",
+  "governorateAsyut": "أسيوط",
+  "governorateSharqia": "الشرقية",
+  "governorateRedSea": "البحر الأحمر",
+  "governorateBeheira": "البحيرة",
+  "governorateGiza": "الجيزة",
+  "governorateSuez": "السويس",
+  "governorateDakahlia": "الدقهلية",
+  "governorateFayoum": "الفيوم",
+  "governorateCairo": "القاهرة",
+  "governorateQalyubia": "القليوبية",
+  "governorateMinya": "المنيا",
+  "governorateBeniSuef": "بني سويف",
+  "governorateMonufia": "المنوفية",
+  "governoratePortSaid": "بورسعيد",
+  "governorateNewValley": "الوادي الجديد",
+  "governorateGharbia": "الغربية",
+  "governorateSouthSinai": "جنوب سيناء",
+  "governorateNorthSinai": "شمال سيناء",
+  "governorateDamietta": "دمياط",
+  "governorateSohag": "سوهاج",
+  "governorateQena": "قنا",
+  "governorateKafrElSheikh": "كفر الشيخ",
+  "governorateMatrouh": "مطروح"
+}

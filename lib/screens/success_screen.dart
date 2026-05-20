@@ -1,4 +1,6 @@
+import 'package:bakasa_web/l10n/app_localizations.dart';
 import 'package:bakasa_web/theme/bakasa_theme.dart';
+import 'package:bakasa_web/widgets/language_switcher_button.dart';
 import 'package:bakasa_web/widgets/neon_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -9,6 +11,7 @@ class SuccessScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -50,7 +53,7 @@ class SuccessScreen extends StatelessWidget {
                             .fadeIn(duration: 400.ms),
                         const SizedBox(height: 24),
                         Text(
-                          'Order received!',
+                          l10n.orderReceived,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.orbitron(
                             fontSize: 28,
@@ -60,8 +63,7 @@ class SuccessScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 14),
                         Text(
-                          'Thanks for choosing Bakasa. Our team will reach out soon to '
-                          'confirm your order and delivery details.',
+                          l10n.orderReceivedDescription,
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.bodyLarge
                               ?.copyWith(
@@ -77,7 +79,7 @@ class SuccessScreen extends StatelessWidget {
                             ).popUntil((route) => route.isFirst);
                           },
                           child: Text(
-                            'BACK TO PRODUCT',
+                            l10n.backToProduct,
                             style: GoogleFonts.orbitron(
                               fontWeight: FontWeight.w800,
                             ),
@@ -87,6 +89,16 @@ class SuccessScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+              ),
+            ),
+          ),
+          PositionedDirectional(
+            top: 0,
+            end: 0,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                child: const LanguageSwitcherButton(),
               ),
             ),
           ),

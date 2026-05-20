@@ -20,6 +20,40 @@ class ValidatedPromo {
   final int quantityLeft;
 }
 
+/// Reason code returned from [PromoCodeService.validate] when validation fails.
+/// The UI maps each code to a localized string so error messages stay in the
+/// current app language.
+enum PromoErrorCode {
+  needsFirebase,
+  empty,
+  tooLong,
+  notFound,
+  notActive,
+  expired,
+  validationFailed,
+}
+
+class PromoValidationResult {
+  const PromoValidationResult.success(this.promo)
+      : errorCode = null,
+        errorContext = null;
+
+  const PromoValidationResult.failure(
+    PromoErrorCode code, {
+    this.errorContext,
+  })  : promo = null,
+        errorCode = code;
+
+  final ValidatedPromo? promo;
+  final PromoErrorCode? errorCode;
+
+  /// Optional extra detail (e.g. Firebase error code) for codes that template
+  /// it into their message.
+  final String? errorContext;
+
+  bool get ok => errorCode == null && promo != null;
+}
+
 /// Looks up documents in [BakasaConfig.promoCodesFirestoreCollection] by field `code`
 /// trying trimmed input plus lower/upper variants (Firestore `==` is case-sensitive).
 class PromoCodeService {
@@ -65,24 +99,17 @@ class PromoCodeService {
     return 0;
   }
 
-  static Future<({bool ok, ValidatedPromo? promo, String? error})> validate(
-    String raw,
-  ) async {
+  static Future<PromoValidationResult> validate(String raw) async {
     if (Firebase.apps.isEmpty) {
-      return (
-        ok: false,
-        promo: null,
-        error:
-            'Promo codes need Firebase. Open the web app build (Flutter web).',
-      );
+      return const PromoValidationResult.failure(PromoErrorCode.needsFirebase);
     }
 
     final normalized = normalize(raw);
     if (normalized.isEmpty) {
-      return (ok: false, promo: null, error: 'Enter a promo code');
+      return const PromoValidationResult.failure(PromoErrorCode.empty);
     }
     if (normalized.length > BakasaConfig.promoCodeMaxLength) {
-      return (ok: false, promo: null, error: 'That code is too long.');
+      return const PromoValidationResult.failure(PromoErrorCode.tooLong);
     }
 
     try {
@@ -100,7 +127,7 @@ class PromoCodeService {
       }
 
       if (found == null || found.docs.isEmpty) {
-        return (ok: false, promo: null, error: 'This promo code isn’t valid.');
+        return const PromoValidationResult.failure(PromoErrorCode.notFound);
       }
 
       final doc = found.docs.single;
@@ -112,11 +139,7 @@ class PromoCodeService {
           : normalized;
 
       if (!_readActive(data)) {
-        return (
-          ok: false,
-          promo: null,
-          error: 'This promo code isn’t active anymore.',
-        );
+        return const PromoValidationResult.failure(PromoErrorCode.notActive);
       }
 
       final rawLabel = data['label'];
@@ -127,34 +150,25 @@ class PromoCodeService {
       final pct = _readDiscountPercent(data);
       final qty = _readQuantity(data);
       if (qty <= 0) {
-        return (
-          ok: false,
-          promo: null,
-          error: 'This promo code has expired (fully used).',
-        );
+        return const PromoValidationResult.failure(PromoErrorCode.expired);
       }
 
-      return (
-        ok: true,
-        promo: ValidatedPromo(
+      return PromoValidationResult.success(
+        ValidatedPromo(
           id: promoId,
           label: label,
           discountPercent: pct,
           quantityLeft: qty,
         ),
-        error: null,
       );
     } on FirebaseException catch (e) {
-      return (
-        ok: false,
-        promo: null,
-        error: 'Could not validate the code (${e.code}). Try again.',
+      return PromoValidationResult.failure(
+        PromoErrorCode.validationFailed,
+        errorContext: e.code,
       );
     } catch (_) {
-      return (
-        ok: false,
-        promo: null,
-        error: 'Something went wrong. Try again.',
+      return const PromoValidationResult.failure(
+        PromoErrorCode.validationFailed,
       );
     }
   }

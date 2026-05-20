@@ -1,0 +1,180 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "Bakasa — Card Game",
+  "language": "Language",
+  "languageEnglish": "English",
+  "languageArabic": "العربية",
+  "languageShortEn": "EN",
+  "languageShortAr": "AR",
+
+  "collectorEdition": "COLLECTOR EDITION",
+  "productName": "Bakasa Card Game — Collector Box",
+  "shortDescription": "The offline party card game from the Bakasa universe — fast rounds, big laughs, and rules everyone can learn in one minute.",
+  "insideTheBox": "Inside the box",
+  "boxContents": "Premium tuck box, full playing card deck, quick-start rules leaflet, and a code for future digital perks.",
+  "priceNote": "Limited launch edition",
+  "currencyEgp": "EGP",
+  "priceLabel": "EGP {price}",
+  "@priceLabel": {
+    "placeholders": {
+      "price": { "type": "int" }
+    }
+  },
+  "orderNow": "ORDER NOW",
+
+  "howToPlay": "HOW TO PLAY",
+  "quickVideoGuide": "Quick video guide",
+  "howToPlayDescription": "Watch a fast tutorial to understand the game flow, roles, and how to start in seconds.",
+  "howToPlayBakasa": "How to play Bakasa",
+  "youtube": "YouTube",
+
+  "connectWithUs": "CONNECT WITH US",
+  "joinCommunityTitle": "Join the Bakasa community",
+  "joinCommunityDescription": "Follow updates, download the app, and reach us directly.",
+  "socialGooglePlay": "Google Play",
+  "socialAppStore": "App Store",
+  "socialInstagram": "Instagram",
+  "socialFacebook": "Facebook",
+  "socialTikTok": "TikTok",
+  "emailSubjectContactUs": "Bakasa - Contact us",
+
+  "placeYourOrder": "Place your order",
+  "deliveryDetailsIntro": "We need a few details to arrange delivery.",
+  "fullName": "Full name",
+  "validatorEnterName": "Please enter your name",
+  "phoneNumber": "Phone number",
+  "phoneHint": "e.g. +20 10 1234 5678",
+  "validatorEnterPhone": "Please enter your phone number",
+  "validatorPhoneInvalid": "Enter a valid phone number",
+  "governorate": "Governorate",
+  "validatorSelectGovernorate": "Select your governorate",
+  "city": "City / area",
+  "validatorEnterCity": "Please enter your city / area",
+  "streetName": "Street name",
+  "validatorEnterStreet": "Please enter street name",
+  "buildingNumber": "Building no.",
+  "floorNumber": "Floor no.",
+  "apartmentNumber": "Apartment no.",
+  "validatorRequired": "Required",
+  "validatorEnterApartment": "Please enter apartment number",
+  "notesLandmarkOptional": "Notes / landmark (optional)",
+  "locating": "Locating…",
+  "useMyCurrentLocation": "Use my current location",
+  "locationHelp": "Uses GPS to suggest a nearby address for notes / landmark. Please still fill exact street, building, floor, and apartment.",
+  "submitOrder": "SUBMIT ORDER",
+
+  "errorLocationServicesOff": "Turn on location services to use this.",
+  "errorLocationPermissionRequired": "Location permission is required to detect your address.",
+  "errorLookupAddress": "Could not look up your address. Please type it manually.",
+  "errorGetLocation": "Could not get location: {error}",
+  "@errorGetLocation": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "errorSomethingWentWrong": "Something went wrong. Try again.",
+
+  "orderInfoEmailOnly": "Orders are sent by email to {email} (SMTP in the app on phone/desktop; on web your mail app opens). Optional: set firebaseOrderSubmitUrl to POST to your own server instead.",
+  "@orderInfoEmailOnly": {
+    "placeholders": {
+      "email": { "type": "String" }
+    }
+  },
+  "orderInfoPost": "Orders POST to your configured URL; a copy may also be emailed to {email}.",
+  "@orderInfoPost": {
+    "placeholders": {
+      "email": { "type": "String" }
+    }
+  },
+
+  "promoCode": "Promo code",
+  "promoCodeIntro": "Have a partner code? Apply it before you submit — we’ll check it live.",
+  "enterYourPromoCode": "Enter your promo code",
+  "apply": "Apply",
+  "appliedLabel": "Applied: ",
+  "percentOff": "{percent}% off",
+  "@percentOff": {
+    "placeholders": {
+      "percent": { "type": "int" }
+    }
+  },
+  "remove": "Remove",
+  "collectorBoxPrice": "Collector box · price",
+  "promoNoPercent": "Promo applied — this code has no % discount, so the list price applies.",
+  "youSave": "You save {currency} {amount} · {percent}% off ({code}).",
+  "@youSave": {
+    "placeholders": {
+      "currency": { "type": "String" },
+      "amount": { "type": "int" },
+      "percent": { "type": "int" },
+      "code": { "type": "String" }
+    }
+  },
+  "percentOffApplied": "{percent}% off applied ({code}).",
+  "@percentOffApplied": {
+    "placeholders": {
+      "percent": { "type": "int" },
+      "code": { "type": "String" }
+    }
+  },
+  "promoErrorEmpty": "Enter a code or leave this section blank.",
+  "promoErrorEnter": "Enter a promo code",
+  "promoErrorCouldNotApply": "Could not apply this code.",
+  "promoErrorNotValid": "This promo code isn’t valid.",
+  "promoErrorNotActive": "This promo code isn’t active anymore.",
+  "promoErrorExpired": "This promo code has expired (fully used).",
+  "promoErrorTooLong": "That code is too long.",
+  "promoErrorNeedsFirebase": "Promo codes need Firebase. Open the web app build (Flutter web).",
+  "promoErrorValidation": "Could not validate the code ({code}). Try again.",
+  "@promoErrorValidation": {
+    "placeholders": {
+      "code": { "type": "String" }
+    }
+  },
+
+  "orderTotal": "Order total",
+  "item": "Item",
+  "delivery": "Delivery",
+  "selectGovernorateShort": "Select governorate",
+  "total": "Total",
+  "currencyAmount": "{currency} {amount}",
+  "@currencyAmount": {
+    "placeholders": {
+      "currency": { "type": "String" },
+      "amount": { "type": "int" }
+    }
+  },
+
+  "orderReceived": "Order received!",
+  "orderReceivedDescription": "Thanks for choosing Bakasa. Our team will reach out soon to confirm your order and delivery details.",
+  "backToProduct": "BACK TO PRODUCT",
+
+  "governorateIsmailia": "Ismailia",
+  "governorateAswan": "Aswan",
+  "governorateLuxor": "Luxor",
+  "governorateAlexandria": "Alexandria",
+  "governorateAsyut": "Asyut",
+  "governorateSharqia": "Sharqia",
+  "governorateRedSea": "Red Sea",
+  "governorateBeheira": "Beheira",
+  "governorateGiza": "Giza",
+  "governorateSuez": "Suez",
+  "governorateDakahlia": "Dakahlia",
+  "governorateFayoum": "Fayoum",
+  "governorateCairo": "Cairo",
+  "governorateQalyubia": "Qalyubia",
+  "governorateMinya": "Minya",
+  "governorateBeniSuef": "Beni Suef",
+  "governorateMonufia": "Monufia",
+  "governoratePortSaid": "Port Said",
+  "governorateNewValley": "New Valley",
+  "governorateGharbia": "Gharbia",
+  "governorateSouthSinai": "South Sinai",
+  "governorateNorthSinai": "North Sinai",
+  "governorateDamietta": "Damietta",
+  "governorateSohag": "Sohag",
+  "governorateQena": "Qena",
+  "governorateKafrElSheikh": "Kafr El Sheikh",
+  "governorateMatrouh": "Matrouh"
+}

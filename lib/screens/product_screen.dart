@@ -1,9 +1,11 @@
 import 'dart:math' as math;
 
 import 'package:bakasa_web/config.dart';
+import 'package:bakasa_web/l10n/app_localizations.dart';
 import 'package:bakasa_web/screens/order_screen.dart';
 import 'package:bakasa_web/theme/bakasa_theme.dart';
 import 'package:bakasa_web/widgets/how_to_play_embed.dart';
+import 'package:bakasa_web/widgets/language_switcher_button.dart';
 import 'package:bakasa_web/widgets/neon_card.dart';
 import 'package:bakasa_web/widgets/product_box_hero.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +28,7 @@ class ProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -84,12 +87,23 @@ class ProductScreen extends StatelessWidget {
                         onInstagram: () => _openExternal(_kInstagramUrl),
                         onFacebook: () => _openExternal(_kFacebookUrl),
                         onTikTok: () => _openExternal(_kTikTokUrl),
-                        onEmail: _openEmail,
+                        onEmail: () => _openEmail(l10n.emailSubjectContactUs),
                       ),
                     ],
                   ),
                 );
               },
+            ),
+          ),
+          // Floating language switcher — always reachable, doesn't interrupt the scroll.
+          PositionedDirectional(
+            top: 0,
+            end: 0,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                child: const LanguageSwitcherButton(),
+              ),
             ),
           ),
         ],
@@ -113,11 +127,11 @@ class ProductScreen extends StatelessWidget {
     await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
-  Future<void> _openEmail() async {
+  Future<void> _openEmail(String subject) async {
     final uri = Uri(
       scheme: 'mailto',
       path: _kContactEmail,
-      queryParameters: {'subject': 'Bakasa - Contact us'},
+      queryParameters: {'subject': subject},
     );
     await launchUrl(uri);
   }
@@ -171,6 +185,7 @@ class _ProductCopy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final headline = GoogleFonts.orbitron(
       fontSize: 32,
       fontWeight: FontWeight.w800,
@@ -182,7 +197,7 @@ class _ProductCopy extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'COLLECTOR EDITION',
+            l10n.collectorEdition,
             style: GoogleFonts.exo2(
               fontSize: 12,
               letterSpacing: 4,
@@ -191,10 +206,10 @@ class _ProductCopy extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          Text(BakasaConfig.productName, style: headline),
+          Text(l10n.productName, style: headline),
           const SizedBox(height: 16),
           Text(
-            BakasaConfig.shortDescription,
+            l10n.shortDescription,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               color: BakasaColors.textMuted,
               height: 1.55,
@@ -202,7 +217,7 @@ class _ProductCopy extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Text(
-            'Inside the box',
+            l10n.insideTheBox,
             style: GoogleFonts.exo2(
               fontWeight: FontWeight.w700,
               color: Colors.white,
@@ -210,7 +225,7 @@ class _ProductCopy extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            BakasaConfig.boxContents,
+            l10n.boxContents,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: BakasaColors.textMuted,
               height: 1.5,
@@ -224,7 +239,7 @@ class _ProductCopy extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    BakasaConfig.priceLabel,
+                    l10n.priceLabel(BakasaConfig.productPriceEgp),
                     style: GoogleFonts.orbitron(
                       fontSize: 36,
                       fontWeight: FontWeight.bold,
@@ -232,7 +247,7 @@ class _ProductCopy extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    BakasaConfig.priceNote,
+                    l10n.priceNote,
                     style: TextStyle(
                       color: BakasaColors.textMuted.withValues(alpha: 0.9),
                     ),
@@ -248,7 +263,7 @@ class _ProductCopy extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  'ORDER NOW',
+                  l10n.orderNow,
                   style: GoogleFonts.orbitron(fontWeight: FontWeight.w800),
                 ),
               );
@@ -277,12 +292,13 @@ class _HowToPlaySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return NeonCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'HOW TO PLAY',
+            l10n.howToPlay,
             style: GoogleFonts.exo2(
               fontSize: 12,
               letterSpacing: 3.5,
@@ -292,7 +308,7 @@ class _HowToPlaySection extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            'Quick video guide',
+            l10n.quickVideoGuide,
             style: GoogleFonts.orbitron(
               fontWeight: FontWeight.w700,
               fontSize: 24,
@@ -301,7 +317,7 @@ class _HowToPlaySection extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           Text(
-            'Watch a fast tutorial to understand the game flow, roles, and how to start in seconds.',
+            l10n.howToPlayDescription,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: BakasaColors.textMuted,
               height: 1.5,
@@ -349,6 +365,7 @@ class _VideoPreviewCardState extends State<_VideoPreviewCard>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, _) {
@@ -408,7 +425,7 @@ class _VideoPreviewCardState extends State<_VideoPreviewCard>
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            'How to play Bakasa',
+                            l10n.howToPlayBakasa,
                             style: GoogleFonts.exo2(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
@@ -419,7 +436,7 @@ class _VideoPreviewCardState extends State<_VideoPreviewCard>
                         TextButton.icon(
                           onPressed: widget.onOpenVideo,
                           icon: const Icon(Icons.open_in_new_rounded, size: 16),
-                          label: const Text('YouTube'),
+                          label: Text(l10n.youtube),
                         ),
                       ],
                     ),
@@ -478,6 +495,7 @@ class _ModernFooterState extends State<_ModernFooter>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, _) {
@@ -536,7 +554,7 @@ class _ModernFooterState extends State<_ModernFooter>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'CONNECT WITH US',
+                              l10n.connectWithUs,
                               style: GoogleFonts.exo2(
                                 fontSize: 12,
                                 letterSpacing: 3.2,
@@ -546,7 +564,7 @@ class _ModernFooterState extends State<_ModernFooter>
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              'Join the Bakasa community',
+                              l10n.joinCommunityTitle,
                               style: GoogleFonts.orbitron(
                                 fontSize: 22,
                                 fontWeight: FontWeight.w700,
@@ -555,7 +573,7 @@ class _ModernFooterState extends State<_ModernFooter>
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Follow updates, download the app, and reach us directly.',
+                              l10n.joinCommunityDescription,
                               style: Theme.of(context).textTheme.bodyMedium
                                   ?.copyWith(color: BakasaColors.textMuted),
                             ),
@@ -565,27 +583,27 @@ class _ModernFooterState extends State<_ModernFooter>
                               runSpacing: 10,
                               children: [
                                 _SocialButton(
-                                  label: 'Google Play',
+                                  label: l10n.socialGooglePlay,
                                   icon: Icons.shop_2_outlined,
                                   onTap: widget.onGooglePlay,
                                 ),
                                 _SocialButton(
-                                  label: 'App Store',
+                                  label: l10n.socialAppStore,
                                   icon: Icons.apple,
                                   onTap: widget.onAppleStore,
                                 ),
                                 _SocialButton(
-                                  label: 'Instagram',
+                                  label: l10n.socialInstagram,
                                   icon: Icons.camera_alt_outlined,
                                   onTap: widget.onInstagram,
                                 ),
                                 _SocialButton(
-                                  label: 'Facebook',
+                                  label: l10n.socialFacebook,
                                   icon: Icons.facebook_rounded,
                                   onTap: widget.onFacebook,
                                 ),
                                 _SocialButton(
-                                  label: 'TikTok',
+                                  label: l10n.socialTikTok,
                                   icon: Icons.music_note_rounded,
                                   onTap: widget.onTikTok,
                                 ),

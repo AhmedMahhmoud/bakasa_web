@@ -1,4 +1,5 @@
 import 'package:bakasa_web/config.dart';
+import 'package:bakasa_web/l10n/app_localizations.dart';
 import 'package:bakasa_web/services/order_pricing.dart';
 import 'package:bakasa_web/services/promo_code_service.dart';
 import 'package:bakasa_web/theme/bakasa_theme.dart';
@@ -28,6 +29,7 @@ class PromoCodePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final enabledBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(14),
       borderSide: const BorderSide(color: Color(0xFF1E293B)),
@@ -72,7 +74,7 @@ class PromoCodePanel extends StatelessWidget {
               Icon(Icons.local_offer_outlined, color: BakasaColors.neonMagenta),
               const SizedBox(width: 10),
               Text(
-                'Promo code',
+                l10n.promoCode,
                 style: GoogleFonts.orbitron(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
@@ -83,7 +85,7 @@ class PromoCodePanel extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            'Have a partner code? Apply it before you submit — we’ll check it live.',
+            l10n.promoCodeIntro,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: BakasaColors.textMuted,
               height: 1.35,
@@ -100,7 +102,7 @@ class PromoCodePanel extends StatelessWidget {
                   autocorrect: false,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                    hintText: 'Enter your promo code',
+                    hintText: l10n.enterYourPromoCode,
                     hintStyle: TextStyle(
                       color: BakasaColors.textMuted.withValues(alpha: 0.7),
                     ),
@@ -137,7 +139,7 @@ class PromoCodePanel extends StatelessWidget {
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : Text(
-                        'Apply',
+                        l10n.apply,
                         style: GoogleFonts.exo2(fontWeight: FontWeight.w700),
                       ),
               ),
@@ -174,9 +176,9 @@ class PromoCodePanel extends StatelessWidget {
                         height: 1.3,
                       ),
                       children: [
-                        const TextSpan(
-                          text: 'Applied: ',
-                          style: TextStyle(fontWeight: FontWeight.w600),
+                        TextSpan(
+                          text: l10n.appliedLabel,
+                          style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
                         TextSpan(
                           text: applied!.id,
@@ -184,7 +186,8 @@ class PromoCodePanel extends StatelessWidget {
                         ),
                         if (applied!.discountPercent > 0)
                           TextSpan(
-                            text: '  ·  ${applied!.discountPercent}% off',
+                            text:
+                                '  ·  ${l10n.percentOff(applied!.discountPercent)}',
                             style: TextStyle(
                               color: BakasaColors.gold,
                               fontWeight: FontWeight.w700,
@@ -198,15 +201,6 @@ class PromoCodePanel extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                        // TextSpan(
-                        //   text: '  ·  left: ${applied!.quantityLeft}',
-                        //   style: TextStyle(
-                        //     color: BakasaColors.textMuted.withValues(
-                        //       alpha: 0.9,
-                        //     ),
-                        //     fontWeight: FontWeight.w600,
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),
@@ -214,7 +208,7 @@ class PromoCodePanel extends StatelessWidget {
                 TextButton(
                   onPressed: onClear,
                   child: Text(
-                    'Remove',
+                    l10n.remove,
                     style: GoogleFonts.exo2(fontWeight: FontWeight.w700),
                   ),
                 ),
@@ -228,7 +222,7 @@ class PromoCodePanel extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           Text(
-            'Collector box · price',
+            l10n.collectorBoxPrice,
             style: GoogleFonts.orbitron(
               fontSize: 13,
               fontWeight: FontWeight.w700,
@@ -251,8 +245,9 @@ class _PriceSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final base = BakasaConfig.productPriceEgp;
-    final cur = BakasaConfig.priceCurrency;
+    final cur = l10n.currencyEgp;
     final pct = appliedPromo?.discountPercent ?? 0;
     final hasPct = pct > 0;
     final finalAmt = OrderPricing.finalPriceEgp(base, pct);
@@ -283,7 +278,7 @@ class _PriceSummary extends StatelessWidget {
             const SizedBox(width: 10),
             Expanded(
               child: Text(
-                'Promo applied — this code has no % discount, so the list price applies.',
+                l10n.promoNoPercent,
                 style: GoogleFonts.exo2(
                   fontSize: 11.5,
                   color: BakasaColors.textMuted,
@@ -352,8 +347,8 @@ class _PriceSummary extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           save > 0
-              ? 'You save $cur $save · $pct% off ($codeId).'
-              : '$pct% off applied ($codeId).',
+              ? l10n.youSave(cur, save, pct, codeId)
+              : l10n.percentOffApplied(pct, codeId),
           style: GoogleFonts.exo2(
             fontSize: 12.5,
             color: BakasaColors.textMuted,

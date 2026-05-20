@@ -1,10 +1,14 @@
 import 'package:bakasa_web/config.dart';
+import 'package:bakasa_web/l10n/app_localizations.dart';
+import 'package:bakasa_web/l10n/governorate_labels.dart';
+import 'package:bakasa_web/l10n/promo_error_messages.dart';
 import 'package:bakasa_web/screens/success_screen.dart';
 import 'package:bakasa_web/services/order_pricing.dart';
 import 'package:bakasa_web/services/order_submission_service.dart';
 import 'package:bakasa_web/services/promo_code_service.dart';
 import 'package:bakasa_web/services/reverse_geocode_service.dart';
 import 'package:bakasa_web/theme/bakasa_theme.dart';
+import 'package:bakasa_web/widgets/language_switcher_button.dart';
 import 'package:bakasa_web/widgets/neon_card.dart';
 import 'package:bakasa_web/widgets/promo_code_panel.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +26,7 @@ class _OrderScreenState extends State<OrderScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
+  final _cityController = TextEditingController();
   final _streetController = TextEditingController();
   final _buildingController = TextEditingController();
   final _floorController = TextEditingController();
@@ -57,6 +62,7 @@ class _OrderScreenState extends State<OrderScreen> {
     _promoController.removeListener(_onPromoTextChanged);
     _nameController.dispose();
     _phoneController.dispose();
+    _cityController.dispose();
     _streetController.dispose();
     _buildingController.dispose();
     _floorController.dispose();
@@ -67,15 +73,14 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   Future<void> _fillLocationFromDevice() async {
+    final l10n = AppLocalizations.of(context);
     setState(() => _locating = true);
     try {
       final serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Turn on location services to use this.'),
-          ),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.errorLocationServicesOff)));
         return;
       }
       var permission = await Geolocator.checkPermission();
@@ -86,11 +91,7 @@ class _OrderScreenState extends State<OrderScreen> {
           permission == LocationPermission.deniedForever) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                'Location permission is required to detect your address.',
-              ),
-            ),
+            SnackBar(content: Text(l10n.errorLocationPermissionRequired)),
           );
         }
         return;
@@ -105,13 +106,9 @@ class _OrderScreenState extends State<OrderScreen> {
       );
       if (!mounted) return;
       if (address == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Could not look up your address. Please type it manually.',
-            ),
-          ),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.errorLookupAddress)));
         return;
       }
       final existing = _notesController.text.trim();
@@ -120,9 +117,9 @@ class _OrderScreenState extends State<OrderScreen> {
           : '$existing — $address';
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Could not get location: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.errorGetLocation(e.toString()))),
+        );
       }
     } finally {
       if (mounted) setState(() => _locating = false);
@@ -130,11 +127,12 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   Future<void> _applyPromoFromButton() async {
+    final l10n = AppLocalizations.of(context);
     FocusScope.of(context).unfocus();
     final raw = _promoController.text.trim();
     if (raw.isEmpty) {
       setState(() {
-        _promoInlineError = 'Enter a code or leave this section blank.';
+        _promoInlineError = l10n.promoErrorEmpty;
         _appliedPromo = null;
       });
       return;
@@ -152,7 +150,9 @@ class _OrderScreenState extends State<OrderScreen> {
     if (!r.ok) {
       setState(() {
         _appliedPromo = null;
-        _promoInlineError = r.error ?? 'Could not apply this code.';
+        _promoInlineError = r.errorCode == null
+            ? l10n.promoErrorCouldNotApply
+            : promoErrorMessage(l10n, r.errorCode!, context: r.errorContext);
       });
       return;
     }
@@ -172,6 +172,7 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   Future<void> _submit() async {
+    final l10n = AppLocalizations.of(context);
     if (!_formKey.currentState!.validate()) return;
 
     final rawPromo = _promoController.text.trim();
@@ -187,9 +188,12 @@ class _OrderScreenState extends State<OrderScreen> {
         if (!mounted) return;
         setState(() => _loading = false);
         if (!r.ok) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(r.error ?? 'This promo code isn’t valid.')),
-          );
+          final msg = r.errorCode == null
+              ? l10n.promoErrorNotValid
+              : promoErrorMessage(l10n, r.errorCode!, context: r.errorContext);
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(msg)));
           return;
         }
         promoToSend = r.promo!.id;
@@ -219,6 +223,7 @@ class _OrderScreenState extends State<OrderScreen> {
       name: _nameController.text.trim(),
       phone: _phoneController.text.trim(),
       governorate: _selectedGovernorate ?? '',
+      city: _cityController.text.trim(),
       street: _streetController.text.trim(),
       buildingNumber: _buildingController.text.trim(),
       floorNumber: _floorController.text.trim(),
@@ -241,9 +246,7 @@ class _OrderScreenState extends State<OrderScreen> {
     }
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(result.message ?? 'Something went wrong. Try again.'),
-      ),
+      SnackBar(content: Text(result.message ?? l10n.errorSomethingWentWrong)),
     );
   }
 
@@ -260,19 +263,31 @@ class _OrderScreenState extends State<OrderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          // iOS-style chevron is not auto-mirrored; flip manually in RTL.
+          icon: Transform.flip(
+            flipX: isRtl,
+            child: const Icon(Icons.arrow_back_ios_new_rounded),
+          ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          'Place your order',
+          l10n.placeYourOrder,
           style: GoogleFonts.orbitron(
             fontWeight: FontWeight.w700,
             fontSize: 18,
           ),
         ),
+        actions: const [
+          Padding(
+            padding: EdgeInsetsDirectional.only(end: 12),
+            child: Center(child: LanguageSwitcherButton(dense: true)),
+          ),
+        ],
       ),
       body: Stack(
         children: [
@@ -301,7 +316,7 @@ class _OrderScreenState extends State<OrderScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          'We need a few details to arrange delivery.',
+                          l10n.deliveryDetailsIntro,
                           style: Theme.of(context).textTheme.titleMedium
                               ?.copyWith(color: BakasaColors.textMuted),
                         ),
@@ -309,13 +324,15 @@ class _OrderScreenState extends State<OrderScreen> {
                         TextFormField(
                           controller: _nameController,
                           textInputAction: TextInputAction.next,
-                          decoration: const InputDecoration(
-                            labelText: 'Full name',
-                            prefixIcon: Icon(Icons.person_outline_rounded),
+                          decoration: InputDecoration(
+                            labelText: l10n.fullName,
+                            prefixIcon: const Icon(
+                              Icons.person_outline_rounded,
+                            ),
                           ),
                           validator: (v) {
                             if (v == null || v.trim().isEmpty) {
-                              return 'Please enter your name';
+                              return l10n.validatorEnterName;
                             }
                             return null;
                           },
@@ -326,18 +343,18 @@ class _OrderScreenState extends State<OrderScreen> {
                           keyboardType: TextInputType.phone,
                           textInputAction: TextInputAction.next,
                           autocorrect: false,
-                          decoration: const InputDecoration(
-                            labelText: 'Phone number',
-                            hintText: 'e.g. +20 10 1234 5678',
-                            prefixIcon: Icon(Icons.phone_outlined),
+                          decoration: InputDecoration(
+                            labelText: l10n.phoneNumber,
+                            hintText: l10n.phoneHint,
+                            prefixIcon: const Icon(Icons.phone_outlined),
                           ),
                           validator: (v) {
                             if (v == null || v.trim().isEmpty) {
-                              return 'Please enter your phone number';
+                              return l10n.validatorEnterPhone;
                             }
                             final digits = RegExp(r'\d').allMatches(v).length;
                             if (digits < 7) {
-                              return 'Enter a valid phone number';
+                              return l10n.validatorPhoneInvalid;
                             }
                             return null;
                           },
@@ -346,10 +363,12 @@ class _OrderScreenState extends State<OrderScreen> {
                         DropdownButtonFormField<String>(
                           initialValue: _selectedGovernorate,
                           isExpanded: true,
-                          alignment: AlignmentDirectional.centerEnd,
-                          decoration: const InputDecoration(
-                            labelText: 'Governorate',
-                            prefixIcon: Icon(Icons.location_city_outlined),
+                          alignment: AlignmentDirectional.centerStart,
+                          decoration: InputDecoration(
+                            labelText: l10n.governorate,
+                            prefixIcon: const Icon(
+                              Icons.location_city_outlined,
+                            ),
                           ),
                           items: BakasaConfig
                               .deliveryCostByGovernorateEgp
@@ -358,8 +377,10 @@ class _OrderScreenState extends State<OrderScreen> {
                                 (entry) => DropdownMenuItem<String>(
                                   value: entry.key,
                                   child: Align(
-                                    alignment: AlignmentDirectional.centerEnd,
-                                    child: Text(entry.key),
+                                    alignment: AlignmentDirectional.centerStart,
+                                    child: Text(
+                                      governorateLabel(entry.key, l10n),
+                                    ),
                                   ),
                                 ),
                               )
@@ -369,7 +390,22 @@ class _OrderScreenState extends State<OrderScreen> {
                           },
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
-                              return 'Select your governorate';
+                              return l10n.validatorSelectGovernorate;
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 18),
+                        TextFormField(
+                          controller: _cityController,
+                          textInputAction: TextInputAction.next,
+                          decoration: InputDecoration(
+                            labelText: l10n.city,
+                            prefixIcon: const Icon(Icons.map_outlined),
+                          ),
+                          validator: (v) {
+                            if (v == null || v.trim().isEmpty) {
+                              return l10n.validatorEnterCity;
                             }
                             return null;
                           },
@@ -378,13 +414,13 @@ class _OrderScreenState extends State<OrderScreen> {
                         TextFormField(
                           controller: _streetController,
                           textInputAction: TextInputAction.next,
-                          decoration: const InputDecoration(
-                            labelText: 'Street name',
-                            prefixIcon: Icon(Icons.route_rounded),
+                          decoration: InputDecoration(
+                            labelText: l10n.streetName,
+                            prefixIcon: const Icon(Icons.route_rounded),
                           ),
                           validator: (v) {
                             if (v == null || v.trim().isEmpty) {
-                              return 'Please enter street name';
+                              return l10n.validatorEnterStreet;
                             }
                             return null;
                           },
@@ -396,13 +432,15 @@ class _OrderScreenState extends State<OrderScreen> {
                               child: TextFormField(
                                 controller: _buildingController,
                                 textInputAction: TextInputAction.next,
-                                decoration: const InputDecoration(
-                                  labelText: 'Building no.',
-                                  prefixIcon: Icon(Icons.apartment_rounded),
+                                decoration: InputDecoration(
+                                  labelText: l10n.buildingNumber,
+                                  prefixIcon: const Icon(
+                                    Icons.apartment_rounded,
+                                  ),
                                 ),
                                 validator: (v) {
                                   if (v == null || v.trim().isEmpty) {
-                                    return 'Required';
+                                    return l10n.validatorRequired;
                                   }
                                   return null;
                                 },
@@ -413,13 +451,13 @@ class _OrderScreenState extends State<OrderScreen> {
                               child: TextFormField(
                                 controller: _floorController,
                                 textInputAction: TextInputAction.next,
-                                decoration: const InputDecoration(
-                                  labelText: 'Floor no.',
-                                  prefixIcon: Icon(Icons.stairs_rounded),
+                                decoration: InputDecoration(
+                                  labelText: l10n.floorNumber,
+                                  prefixIcon: const Icon(Icons.stairs_rounded),
                                 ),
                                 validator: (v) {
                                   if (v == null || v.trim().isEmpty) {
-                                    return 'Required';
+                                    return l10n.validatorRequired;
                                   }
                                   return null;
                                 },
@@ -431,13 +469,15 @@ class _OrderScreenState extends State<OrderScreen> {
                         TextFormField(
                           controller: _apartmentController,
                           textInputAction: TextInputAction.next,
-                          decoration: const InputDecoration(
-                            labelText: 'Apartment no.',
-                            prefixIcon: Icon(Icons.door_front_door_outlined),
+                          decoration: InputDecoration(
+                            labelText: l10n.apartmentNumber,
+                            prefixIcon: const Icon(
+                              Icons.door_front_door_outlined,
+                            ),
                           ),
                           validator: (v) {
                             if (v == null || v.trim().isEmpty) {
-                              return 'Please enter apartment number';
+                              return l10n.validatorEnterApartment;
                             }
                             return null;
                           },
@@ -447,8 +487,8 @@ class _OrderScreenState extends State<OrderScreen> {
                           controller: _notesController,
                           maxLines: 3,
                           textInputAction: TextInputAction.done,
-                          decoration: const InputDecoration(
-                            labelText: 'Notes / landmark (optional)',
+                          decoration: InputDecoration(
+                            labelText: l10n.notesLandmarkOptional,
                             alignLabelWithHint: true,
                           ),
                         ),
@@ -465,7 +505,9 @@ class _OrderScreenState extends State<OrderScreen> {
                                 )
                               : const Icon(Icons.my_location_rounded),
                           label: Text(
-                            _locating ? 'Locating…' : 'Use my current location',
+                            _locating
+                                ? l10n.locating
+                                : l10n.useMyCurrentLocation,
                             style: GoogleFonts.exo2(
                               fontWeight: FontWeight.w600,
                             ),
@@ -473,8 +515,7 @@ class _OrderScreenState extends State<OrderScreen> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Uses GPS to suggest a nearby address for notes/landmark. '
-                          'Please still fill exact street, building, floor, and apartment.',
+                          l10n.locationHelp,
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(color: BakasaColors.textMuted),
                         ),
@@ -511,28 +552,25 @@ class _OrderScreenState extends State<OrderScreen> {
                                   ),
                                 )
                               : Text(
-                                  'SUBMIT ORDER',
+                                  l10n.submitOrder,
                                   style: GoogleFonts.orbitron(
                                     fontWeight: FontWeight.w800,
                                   ),
                                 ),
                         ),
                         const SizedBox(height: 12),
-                        Text(
-                          BakasaConfig.orderSubmitUrlResolved.isEmpty
-                              ? 'Orders are sent by email to ${BakasaConfig.orderEmail} '
-                                    '(SMTP in the app on phone/desktop; on web your mail app opens). '
-                                    'Optional: set firebaseOrderSubmitUrl to POST to your own server instead.'
-                              : 'Orders POST to your configured URL; a copy may also be emailed to '
-                                    '${BakasaConfig.orderEmail}.',
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(
-                                color: BakasaColors.textMuted.withValues(
-                                  alpha: 0.85,
-                                ),
-                              ),
-                        ),
+                        // Text(
+                        //   BakasaConfig.orderSubmitUrlResolved.isEmpty
+                        //       ? l10n.orderInfoEmailOnly(BakasaConfig.orderEmail)
+                        //       : l10n.orderInfoPost(BakasaConfig.orderEmail),
+                        //   textAlign: TextAlign.center,
+                        //   style: Theme.of(context).textTheme.bodySmall
+                        //       ?.copyWith(
+                        //         color: BakasaColors.textMuted.withValues(
+                        //           alpha: 0.85,
+                        //         ),
+                        //       ),
+                        // ),
                       ],
                     ),
                   ),
@@ -557,7 +595,8 @@ class _DeliverySummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cur = BakasaConfig.priceCurrency;
+    final l10n = AppLocalizations.of(context);
+    final cur = l10n.currencyEgp;
     final delivery = deliveryCostEgp ?? 0;
     final total = itemAfterDiscountEgp + delivery;
 
@@ -572,7 +611,7 @@ class _DeliverySummary extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Order total',
+            l10n.orderTotal,
             style: GoogleFonts.orbitron(
               fontSize: 13,
               fontWeight: FontWeight.w700,
@@ -580,14 +619,16 @@ class _DeliverySummary extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          _line('Item', '$cur $itemAfterDiscountEgp'),
+          _line(l10n.item, l10n.currencyAmount(cur, itemAfterDiscountEgp)),
           const SizedBox(height: 6),
           _line(
-            'Delivery',
-            deliveryCostEgp == null ? 'Select governorate' : '$cur $delivery',
+            l10n.delivery,
+            deliveryCostEgp == null
+                ? l10n.selectGovernorateShort
+                : l10n.currencyAmount(cur, delivery),
           ),
           const Divider(height: 18, color: Color(0x33475569)),
-          _line('Total', '$cur $total', emphasize: true),
+          _line(l10n.total, l10n.currencyAmount(cur, total), emphasize: true),
         ],
       ),
     );
