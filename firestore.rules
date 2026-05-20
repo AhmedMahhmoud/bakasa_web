@@ -1,0 +1,14 @@
+rules_version = '2';
+
+/// Promo codes stored with auto IDs: each doc has string field `code` (and usually `discount_percent`).
+/// Client queries: `where('code', '==', '<normalized>').limit(1)` — allowed when the doc has a string `code`.
+/// Writes stay disabled from the app.
+/// Deploy: `firebase deploy --only firestore:rules`
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /promo_codes/{docId} {
+      allow read: if resource.data.code is string;
+      allow create, update, delete: if false;
+    }
+  }
+}

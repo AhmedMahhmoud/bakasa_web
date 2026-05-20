@@ -28,10 +28,9 @@ ThemeData buildBakasaTheme() {
 
   return base.copyWith(
     scaffoldBackgroundColor: BakasaColors.bgDeep,
-    textTheme: GoogleFonts.exo2TextTheme(base.textTheme).apply(
-      bodyColor: Colors.white,
-      displayColor: Colors.white,
-    ),
+    textTheme: GoogleFonts.exo2TextTheme(
+      base.textTheme,
+    ).apply(bodyColor: Colors.white, displayColor: Colors.white),
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.transparent,
       elevation: 0,

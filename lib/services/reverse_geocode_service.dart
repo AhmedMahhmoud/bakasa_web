@@ -36,11 +36,12 @@ class ReverseGeocodeService {
     double longitude,
     String localityLanguage,
   ) async {
-    final uri = Uri.https('api.bigdatacloud.net', '/data/reverse-geocode-client', {
-      'latitude': latitude.toString(),
-      'longitude': longitude.toString(),
-      'localityLanguage': localityLanguage,
-    });
+    final uri =
+        Uri.https('api.bigdatacloud.net', '/data/reverse-geocode-client', {
+          'latitude': latitude.toString(),
+          'longitude': longitude.toString(),
+          'localityLanguage': localityLanguage,
+        });
 
     final response = await http.get(uri);
     if (response.statusCode != 200) return null;

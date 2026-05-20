@@ -1,0 +1,27 @@
+Promo docs can use Firebase auto IDs. The app loads by field `code` (lowercase recommended).
+
+Align list price math with BakasaConfig.productPriceEgp in lib/config.dart.
+
+Collection ID: promo_codes
+
+Fields per document:
+  code (string): e.g. bakasa_radwan — must match lowercased user input after normalize.
+  discount_percent (number): e.g. 10 for 10% off list price.
+  quantity (number): remaining uses, decremented on successful submit (e.g. 50).
+Optional:
+  active (boolean): omit or true = usable; false = rejects in app.
+  label (string): optional nickname for receipts / UI.
+
+Example (create doc with Auto-ID in console):
+
+  code: bakasa_radwan
+  discount_percent: 10
+  quantity: 50
+  active: true
+  label: Radwan
+
+  code: bakasa_mahmoud
+  discount_percent: 10
+  quantity: 50
+  active: true
+  label: Mahmoud

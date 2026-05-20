@@ -21,14 +21,50 @@ class OrderSubmissionService {
   static String buildOrderBody({
     required String name,
     required String phone,
-    required String location,
+    required String governorate,
+    required String street,
+    required String buildingNumber,
+    required String floorNumber,
+    required String apartmentNumber,
+    String? notesOrLandmark,
+    String? promoCode,
+    required int listPriceEgp,
+    required int itemPriceAfterDiscountEgp,
+    required int deliveryCostEgp,
+    required int totalPriceEgp,
+    int discountPercentApplied = 0,
   }) {
+    final cur = BakasaConfig.priceCurrency;
     final buffer = StringBuffer()
       ..writeln('New Bakasa box order')
       ..writeln()
       ..writeln('Name: $name')
       ..writeln('Phone: $phone')
-      ..writeln('Location / delivery: $location')
+      ..writeln('Governorate: $governorate')
+      ..writeln('Street: $street')
+      ..writeln('Building no.: $buildingNumber')
+      ..writeln('Floor no.: $floorNumber')
+      ..writeln('Apartment no.: $apartmentNumber');
+    if (notesOrLandmark != null && notesOrLandmark.trim().isNotEmpty) {
+      buffer.writeln('Notes / landmark: ${notesOrLandmark.trim()}');
+    }
+    buffer
+      ..writeln()
+      ..writeln('Pricing')
+      ..writeln('List price ($cur): $listPriceEgp');
+    if (discountPercentApplied > 0) {
+      buffer.writeln('Promo discount: $discountPercentApplied%');
+    }
+    buffer
+      ..writeln('Item after discount ($cur): $itemPriceAfterDiscountEgp')
+      ..writeln('Delivery fee ($cur): $deliveryCostEgp')
+      ..writeln('Total to pay ($cur): $totalPriceEgp');
+    if (promoCode != null && promoCode.trim().isNotEmpty) {
+      buffer
+        ..writeln()
+        ..writeln('Promo code: ${promoCode.trim()}');
+    }
+    buffer
       ..writeln()
       ..writeln('— Sent from Bakasa web order form');
     return buffer.toString();
@@ -37,30 +73,70 @@ class OrderSubmissionService {
   static String _notificationBodyText({
     required String name,
     required String phone,
-    required String location,
+    required String governorate,
+    required String street,
+    required String buildingNumber,
+    required String floorNumber,
+    required String apartmentNumber,
+    String? notesOrLandmark,
+    String? promoCode,
+    required int listPriceEgp,
+    required int itemPriceAfterDiscountEgp,
+    required int deliveryCostEgp,
+    required int totalPriceEgp,
+    int discountPercentApplied = 0,
   }) {
-    final requestJson = jsonEncode(<String, String>{
-      'name': name,
-      'phone': phone,
-      'location': location,
-    });
-    return '${buildOrderBody(name: name, phone: phone, location: location)}\n\n'
-        '---\n'
-        'Request JSON:\n'
-        '$requestJson';
+    return buildOrderBody(
+      name: name,
+      phone: phone,
+      governorate: governorate,
+      street: street,
+      buildingNumber: buildingNumber,
+      floorNumber: floorNumber,
+      apartmentNumber: apartmentNumber,
+      notesOrLandmark: notesOrLandmark,
+      promoCode: promoCode,
+      listPriceEgp: listPriceEgp,
+      itemPriceAfterDiscountEgp: itemPriceAfterDiscountEgp,
+      deliveryCostEgp: deliveryCostEgp,
+      totalPriceEgp: totalPriceEgp,
+      discountPercentApplied: discountPercentApplied,
+    );
   }
 
   static Future<OrderSmtpOutcome> _notifyMail({
     required String name,
     required String phone,
-    required String location,
+    required String governorate,
+    required String street,
+    required String buildingNumber,
+    required String floorNumber,
+    required String apartmentNumber,
+    String? notesOrLandmark,
+    String? promoCode,
+    required int listPriceEgp,
+    required int itemPriceAfterDiscountEgp,
+    required int deliveryCostEgp,
+    required int totalPriceEgp,
+    int discountPercentApplied = 0,
   }) {
     return sendOrderNotificationAfterSubmit(
       subject: 'Bakasa order — $name',
       bodyText: _notificationBodyText(
         name: name,
         phone: phone,
-        location: location,
+        governorate: governorate,
+        street: street,
+        buildingNumber: buildingNumber,
+        floorNumber: floorNumber,
+        apartmentNumber: apartmentNumber,
+        notesOrLandmark: notesOrLandmark,
+        promoCode: promoCode,
+        listPriceEgp: listPriceEgp,
+        itemPriceAfterDiscountEgp: itemPriceAfterDiscountEgp,
+        deliveryCostEgp: deliveryCostEgp,
+        totalPriceEgp: totalPriceEgp,
+        discountPercentApplied: discountPercentApplied,
       ),
     );
   }
@@ -68,9 +144,35 @@ class OrderSubmissionService {
   static Future<OrderSubmissionResult> submitViaMailto({
     required String name,
     required String phone,
-    required String location,
+    required String governorate,
+    required String street,
+    required String buildingNumber,
+    required String floorNumber,
+    required String apartmentNumber,
+    String? notesOrLandmark,
+    String? promoCode,
+    required int listPriceEgp,
+    required int itemPriceAfterDiscountEgp,
+    required int deliveryCostEgp,
+    required int totalPriceEgp,
+    int discountPercentApplied = 0,
   }) async {
-    final bodyText = buildOrderBody(name: name, phone: phone, location: location);
+    final bodyText = buildOrderBody(
+      name: name,
+      phone: phone,
+      governorate: governorate,
+      street: street,
+      buildingNumber: buildingNumber,
+      floorNumber: floorNumber,
+      apartmentNumber: apartmentNumber,
+      notesOrLandmark: notesOrLandmark,
+      promoCode: promoCode,
+      listPriceEgp: listPriceEgp,
+      itemPriceAfterDiscountEgp: itemPriceAfterDiscountEgp,
+      deliveryCostEgp: deliveryCostEgp,
+      totalPriceEgp: totalPriceEgp,
+      discountPercentApplied: discountPercentApplied,
+    );
     final uri = Uri(
       scheme: 'mailto',
       path: BakasaConfig.orderEmail,
@@ -79,10 +181,7 @@ class OrderSubmissionService {
         'body': bodyText,
       },
     );
-    final launched = await launchUrl(
-      uri,
-      mode: LaunchMode.externalApplication,
-    );
+    final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
     if (!launched) {
       return const OrderSubmissionResult(
         success: false,
@@ -95,7 +194,18 @@ class OrderSubmissionService {
   static Future<OrderSubmissionResult> submit({
     required String name,
     required String phone,
-    required String location,
+    required String governorate,
+    required String street,
+    required String buildingNumber,
+    required String floorNumber,
+    required String apartmentNumber,
+    String? notesOrLandmark,
+    String? promoCode,
+    required int listPriceEgp,
+    required int itemPriceAfterDiscountEgp,
+    required int deliveryCostEgp,
+    required int totalPriceEgp,
+    int discountPercentApplied = 0,
   }) async {
     final url = BakasaConfig.orderSubmitUrlResolved;
     if (url.isEmpty) {
@@ -111,7 +221,18 @@ class OrderSubmissionService {
       final outcome = await _notifyMail(
         name: name,
         phone: phone,
-        location: location,
+        governorate: governorate,
+        street: street,
+        buildingNumber: buildingNumber,
+        floorNumber: floorNumber,
+        apartmentNumber: apartmentNumber,
+        notesOrLandmark: notesOrLandmark,
+        promoCode: promoCode,
+        listPriceEgp: listPriceEgp,
+        itemPriceAfterDiscountEgp: itemPriceAfterDiscountEgp,
+        deliveryCostEgp: deliveryCostEgp,
+        totalPriceEgp: totalPriceEgp,
+        discountPercentApplied: discountPercentApplied,
       );
       switch (outcome) {
         case OrderSmtpOutcome.sent:
@@ -120,7 +241,18 @@ class OrderSubmissionService {
           return submitViaMailto(
             name: name,
             phone: phone,
-            location: location,
+            governorate: governorate,
+            street: street,
+            buildingNumber: buildingNumber,
+            floorNumber: floorNumber,
+            apartmentNumber: apartmentNumber,
+            notesOrLandmark: notesOrLandmark,
+            promoCode: promoCode,
+            listPriceEgp: listPriceEgp,
+            itemPriceAfterDiscountEgp: itemPriceAfterDiscountEgp,
+            deliveryCostEgp: deliveryCostEgp,
+            totalPriceEgp: totalPriceEgp,
+            discountPercentApplied: discountPercentApplied,
           );
         case OrderSmtpOutcome.failed:
           return const OrderSubmissionResult(
@@ -140,15 +272,30 @@ class OrderSubmissionService {
       headers['X-Order-Secret'] = secret;
     }
 
+    final payload = <String, dynamic>{
+      'name': name,
+      'phone': phone,
+      'governorate': governorate,
+      'street': street,
+      'buildingNumber': buildingNumber,
+      'floorNumber': floorNumber,
+      'apartmentNumber': apartmentNumber,
+      'notesOrLandmark': notesOrLandmark ?? '',
+      'originalPriceEgp': listPriceEgp,
+      'itemPriceAfterDiscountEgp': itemPriceAfterDiscountEgp,
+      'deliveryCostEgp': deliveryCostEgp,
+      'finalPriceEgp': totalPriceEgp,
+      'discountPercent': discountPercentApplied,
+    };
+    if (promoCode != null && promoCode.trim().isNotEmpty) {
+      payload['promoCode'] = promoCode.trim();
+    }
+
     try {
       final response = await http.post(
         Uri.parse(url),
         headers: headers,
-        body: jsonEncode(<String, dynamic>{
-          'name': name,
-          'phone': phone,
-          'location': location,
-        }),
+        body: jsonEncode(payload),
       );
 
       final decoded = _tryDecode(response.body);
@@ -158,7 +305,18 @@ class OrderSubmissionService {
             await _notifyMail(
               name: name,
               phone: phone,
-              location: location,
+              governorate: governorate,
+              street: street,
+              buildingNumber: buildingNumber,
+              floorNumber: floorNumber,
+              apartmentNumber: apartmentNumber,
+              notesOrLandmark: notesOrLandmark,
+              promoCode: promoCode,
+              listPriceEgp: listPriceEgp,
+              itemPriceAfterDiscountEgp: itemPriceAfterDiscountEgp,
+              deliveryCostEgp: deliveryCostEgp,
+              totalPriceEgp: totalPriceEgp,
+              discountPercentApplied: discountPercentApplied,
             );
             return const OrderSubmissionResult(success: true);
           }
@@ -172,7 +330,18 @@ class OrderSubmissionService {
         await _notifyMail(
           name: name,
           phone: phone,
-          location: location,
+          governorate: governorate,
+          street: street,
+          buildingNumber: buildingNumber,
+          floorNumber: floorNumber,
+          apartmentNumber: apartmentNumber,
+          notesOrLandmark: notesOrLandmark,
+          promoCode: promoCode,
+          listPriceEgp: listPriceEgp,
+          itemPriceAfterDiscountEgp: itemPriceAfterDiscountEgp,
+          deliveryCostEgp: deliveryCostEgp,
+          totalPriceEgp: totalPriceEgp,
+          discountPercentApplied: discountPercentApplied,
         );
         return const OrderSubmissionResult(success: true);
       }

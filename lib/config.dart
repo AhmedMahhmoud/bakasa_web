@@ -13,10 +13,62 @@ class BakasaConfig {
 
   /// Replace `assets/images/game_logo.png` with your exported logo (PNG/WebP).
   static const String gameLogoAsset = 'assets/images/game_logo.png';
+  static const List<String> heroSliderAssets = <String>[
+    'assets/images/hero_slider/hero_1.png',
+    'assets/images/hero_slider/hero_2.png',
+    // 'assets/images/hero_slider/hero_3.png',
+    'assets/images/hero_slider/hero_4.png',
+    'assets/images/hero_slider/hero_5.png',
+    'assets/images/hero_slider/hero_6.png',
+    'assets/images/hero_slider/hero_7.png',
+  ];
+
+  /// Firestore collection for promo codes. Each doc should have string field `code`
+  /// (doc ids can be auto-generated). See `firestore/seed_promo_codes.txt`.
+  static const String promoCodesFirestoreCollection = 'promo_codes';
+
+  /// Max length after trimming / lowercasing (keep codes short).
+  static const int promoCodeMaxLength = 48;
 
   static const String productName = 'Bakasa Card Game — Collector Box';
-  static const String priceLabel = 'EGP 199';
+
+  /// Base list price for one box in EGP. Keep in sync with [priceLabel].
+  static const int productPriceEgp = 250;
+
+  static const String priceCurrency = 'EGP';
+  static const String priceLabel = 'EGP 250';
   static const String priceNote = 'Limited launch edition';
+
+  /// Delivery fee by governorate in EGP.
+  static const Map<String, int> deliveryCostByGovernorateEgp = <String, int>{
+    'الإسماعيلية': 75,
+    'أسوان': 110,
+    'الأقصر': 110,
+    'الإسكندرية': 70,
+    'أسيوط': 80,
+    'الشرقية': 70,
+    'البحر الأحمر': 110,
+    'البحيرة': 70,
+    'الجيزة': 60,
+    'السويس': 75,
+    'الدقهلية': 70,
+    'الفيوم': 80,
+    'القاهرة': 60,
+    'القليوبية': 60,
+    'المنيا': 80,
+    'بني سويف': 80,
+    'المنوفية': 70,
+    'بورسعيد': 75,
+    'الوادي الجديد': 120,
+    'الغربية': 70,
+    'جنوب سيناء': 120,
+    'شمال سيناء': 120,
+    'دمياط': 70,
+    'سوهاج': 110,
+    'قنا': 110,
+    'كفر الشيخ': 70,
+    'مطروح': 120,
+  };
 
   static const String shortDescription =
       'The offline party card game from the Bakasa universe — fast rounds, big laughs, '

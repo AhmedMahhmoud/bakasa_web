@@ -37,10 +37,10 @@ class SuccessScreen extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(
-                          Icons.verified_rounded,
-                          size: 88,
-                          color: BakasaColors.neonCyan,
-                        )
+                              Icons.verified_rounded,
+                              size: 88,
+                              color: BakasaColors.neonCyan,
+                            )
                             .animate()
                             .scale(
                               begin: const Offset(0.5, 0.5),
@@ -63,7 +63,8 @@ class SuccessScreen extends StatelessWidget {
                           'Thanks for choosing Bakasa. Our team will reach out soon to '
                           'confirm your order and delivery details.',
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(
                                 color: BakasaColors.textMuted,
                                 height: 1.5,
                               ),
@@ -71,11 +72,15 @@ class SuccessScreen extends StatelessWidget {
                         const SizedBox(height: 32),
                         FilledButton(
                           onPressed: () {
-                            Navigator.of(context).popUntil((route) => route.isFirst);
+                            Navigator.of(
+                              context,
+                            ).popUntil((route) => route.isFirst);
                           },
                           child: Text(
                             'BACK TO PRODUCT',
-                            style: GoogleFonts.orbitron(fontWeight: FontWeight.w800),
+                            style: GoogleFonts.orbitron(
+                              fontWeight: FontWeight.w800,
+                            ),
                           ),
                         ),
                       ],
