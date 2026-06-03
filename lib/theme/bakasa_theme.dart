@@ -1,5 +1,5 @@
+import 'package:bakasa_web/theme/app_fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class BakasaColors {
   BakasaColors._();
@@ -28,7 +28,7 @@ ThemeData buildBakasaTheme() {
 
   return base.copyWith(
     scaffoldBackgroundColor: BakasaColors.bgDeep,
-    textTheme: GoogleFonts.exo2TextTheme(
+    textTheme: appBodyTextTheme(
       base.textTheme,
     ).apply(bodyColor: Colors.white, displayColor: Colors.white),
     appBarTheme: const AppBarTheme(
@@ -60,7 +60,7 @@ ThemeData buildBakasaTheme() {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         backgroundColor: BakasaColors.neonCyan,
         foregroundColor: BakasaColors.bgDeep,
-        textStyle: GoogleFonts.orbitron(fontWeight: FontWeight.w700),
+        textStyle: appDisplayFont(fontWeight: FontWeight.w700),
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(

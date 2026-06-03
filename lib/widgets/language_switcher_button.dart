@@ -2,7 +2,7 @@ import 'package:bakasa_web/l10n/app_localizations.dart';
 import 'package:bakasa_web/services/locale_controller.dart';
 import 'package:bakasa_web/theme/bakasa_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:bakasa_web/theme/app_fonts.dart';
 
 /// Compact neon pill that opens a popup with English / العربية.
 ///
@@ -83,7 +83,7 @@ class LanguageSwitcherButton extends StatelessWidget {
             ),
             child: Text(
               tag,
-              style: GoogleFonts.orbitron(
+              style: appDisplayFont(
                 fontSize: 12,
                 fontWeight: FontWeight.w800,
                 color: selected ? BakasaColors.neonCyan : Colors.white,
@@ -93,7 +93,7 @@ class LanguageSwitcherButton extends StatelessWidget {
           const SizedBox(width: 12),
           Text(
             label,
-            style: GoogleFonts.exo2(
+            style: appBodyFont(
               color: Colors.white,
               fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
             ),
@@ -146,7 +146,7 @@ class _Pill extends StatelessWidget {
           ],
           Text(
             label,
-            style: GoogleFonts.orbitron(
+            style: appDisplayFont(
               fontSize: 12,
               letterSpacing: 1.2,
               fontWeight: FontWeight.w800,

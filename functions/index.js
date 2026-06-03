@@ -25,6 +25,7 @@ const MAX = {
   name: 200,
   phone: 60,
   governorate: 100,
+  city: 120,
   street: 250,
   building: 80,
   floor: 80,
@@ -169,6 +170,7 @@ exports.submitOrder = onRequest(
     const name = trim(body.name, MAX.name);
     const phone = trim(body.phone, MAX.phone);
     const governorate = trim(body.governorate, MAX.governorate);
+    const city = trim(body.city, MAX.city);
     const street = trim(body.street, MAX.street);
     const buildingNumber = trim(body.buildingNumber, MAX.building);
     const floorNumber = trim(body.floorNumber, MAX.floor);
@@ -221,6 +223,7 @@ exports.submitOrder = onRequest(
       `Name: ${name}`,
       `Phone: ${phone}`,
       `Governorate: ${governorate}`,
+      `City: ${city}`,
       `Street: ${street}`,
       `Building no.: ${buildingNumber}`,
       `Floor no.: ${floorNumber}`,

@@ -4,7 +4,7 @@ import 'package:bakasa_web/widgets/language_switcher_button.dart';
 import 'package:bakasa_web/widgets/neon_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:bakasa_web/theme/app_fonts.dart';
 
 class SuccessScreen extends StatelessWidget {
   const SuccessScreen({super.key});
@@ -55,7 +55,7 @@ class SuccessScreen extends StatelessWidget {
                         Text(
                           l10n.orderReceived,
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.orbitron(
+                          style: appDisplayFont(
                             fontSize: 28,
                             fontWeight: FontWeight.w800,
                             color: Colors.white,
@@ -80,7 +80,7 @@ class SuccessScreen extends StatelessWidget {
                           },
                           child: Text(
                             l10n.backToProduct,
-                            style: GoogleFonts.orbitron(
+                            style: appDisplayFont(
                               fontWeight: FontWeight.w800,
                             ),
                           ),

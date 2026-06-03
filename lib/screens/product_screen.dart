@@ -9,7 +9,7 @@ import 'package:bakasa_web/widgets/language_switcher_button.dart';
 import 'package:bakasa_web/widgets/neon_card.dart';
 import 'package:bakasa_web/widgets/product_box_hero.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:bakasa_web/theme/app_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 const String _kHowToPlayUrl = 'https://youtube.com/shorts/-OwqJANtaUU';
@@ -186,7 +186,7 @@ class _ProductCopy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final headline = GoogleFonts.orbitron(
+    final headline = appDisplayFont(
       fontSize: 32,
       fontWeight: FontWeight.w800,
       height: 1.15,
@@ -198,7 +198,7 @@ class _ProductCopy extends StatelessWidget {
         children: [
           Text(
             l10n.collectorEdition,
-            style: GoogleFonts.exo2(
+            style: appBodyFont(
               fontSize: 12,
               letterSpacing: 4,
               color: BakasaColors.neonMagenta,
@@ -218,7 +218,7 @@ class _ProductCopy extends StatelessWidget {
           const SizedBox(height: 20),
           Text(
             l10n.insideTheBox,
-            style: GoogleFonts.exo2(
+            style: appBodyFont(
               fontWeight: FontWeight.w700,
               color: Colors.white,
             ),
@@ -240,7 +240,7 @@ class _ProductCopy extends StatelessWidget {
                 children: [
                   Text(
                     l10n.priceLabel(BakasaConfig.productPriceEgp),
-                    style: GoogleFonts.orbitron(
+                    style: appDisplayFont(
                       fontSize: 36,
                       fontWeight: FontWeight.bold,
                       color: BakasaColors.gold,
@@ -264,7 +264,7 @@ class _ProductCopy extends StatelessWidget {
                 ),
                 child: Text(
                   l10n.orderNow,
-                  style: GoogleFonts.orbitron(fontWeight: FontWeight.w800),
+                  style: appDisplayFont(fontWeight: FontWeight.w800),
                 ),
               );
               if (row) {
@@ -299,7 +299,7 @@ class _HowToPlaySection extends StatelessWidget {
         children: [
           Text(
             l10n.howToPlay,
-            style: GoogleFonts.exo2(
+            style: appBodyFont(
               fontSize: 12,
               letterSpacing: 3.5,
               color: BakasaColors.neonCyan,
@@ -309,7 +309,7 @@ class _HowToPlaySection extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             l10n.quickVideoGuide,
-            style: GoogleFonts.orbitron(
+            style: appDisplayFont(
               fontWeight: FontWeight.w700,
               fontSize: 24,
               color: Colors.white,
@@ -426,7 +426,7 @@ class _VideoPreviewCardState extends State<_VideoPreviewCard>
                         Expanded(
                           child: Text(
                             l10n.howToPlayBakasa,
-                            style: GoogleFonts.exo2(
+                            style: appBodyFont(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
                               fontSize: 16,
@@ -555,7 +555,7 @@ class _ModernFooterState extends State<_ModernFooter>
                           children: [
                             Text(
                               l10n.connectWithUs,
-                              style: GoogleFonts.exo2(
+                              style: appBodyFont(
                                 fontSize: 12,
                                 letterSpacing: 3.2,
                                 color: BakasaColors.neonCyan,
@@ -565,7 +565,7 @@ class _ModernFooterState extends State<_ModernFooter>
                             const SizedBox(height: 10),
                             Text(
                               l10n.joinCommunityTitle,
-                              style: GoogleFonts.orbitron(
+                              style: appDisplayFont(
                                 fontSize: 22,
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white,
@@ -688,7 +688,7 @@ class _SocialButton extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 label,
-                style: GoogleFonts.exo2(
+                style: appBodyFont(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
                 ),

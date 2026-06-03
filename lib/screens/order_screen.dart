@@ -13,7 +13,7 @@ import 'package:bakasa_web/widgets/neon_card.dart';
 import 'package:bakasa_web/widgets/promo_code_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:bakasa_web/theme/app_fonts.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -277,7 +277,7 @@ class _OrderScreenState extends State<OrderScreen> {
         ),
         title: Text(
           l10n.placeYourOrder,
-          style: GoogleFonts.orbitron(
+          style: appDisplayFont(
             fontWeight: FontWeight.w700,
             fontSize: 18,
           ),
@@ -508,7 +508,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             _locating
                                 ? l10n.locating
                                 : l10n.useMyCurrentLocation,
-                            style: GoogleFonts.exo2(
+                            style: appBodyFont(
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -553,7 +553,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                 )
                               : Text(
                                   l10n.submitOrder,
-                                  style: GoogleFonts.orbitron(
+                                  style: appDisplayFont(
                                     fontWeight: FontWeight.w800,
                                   ),
                                 ),
@@ -612,7 +612,7 @@ class _DeliverySummary extends StatelessWidget {
         children: [
           Text(
             l10n.orderTotal,
-            style: GoogleFonts.orbitron(
+            style: appDisplayFont(
               fontSize: 13,
               fontWeight: FontWeight.w700,
               color: BakasaColors.textMuted,
@@ -639,7 +639,7 @@ class _DeliverySummary extends StatelessWidget {
       children: [
         Text(
           title,
-          style: GoogleFonts.exo2(
+          style: appBodyFont(
             color: emphasize ? Colors.white : BakasaColors.textMuted,
             fontWeight: emphasize ? FontWeight.w700 : FontWeight.w500,
           ),
@@ -647,7 +647,7 @@ class _DeliverySummary extends StatelessWidget {
         const Spacer(),
         Text(
           value,
-          style: GoogleFonts.orbitron(
+          style: appDisplayFont(
             color: emphasize ? BakasaColors.gold : Colors.white,
             fontWeight: emphasize ? FontWeight.w800 : FontWeight.w600,
           ),

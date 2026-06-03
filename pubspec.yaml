@@ -78,6 +78,15 @@ flutter:
     - assets/images/game_logo.png
     - assets/images/hero_slider/
 
+  # Cairo ships an Arabic + Latin glyph set and is bundled (not fetched at
+  # runtime) so Arabic text resolves on the first frame. It is wired up as a
+  # fallback for the Latin-only brand fonts (Orbitron/Exo 2) in lib/theme/
+  # app_fonts.dart, which is what prevents tofu (□) boxes on first load.
+  fonts:
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/Cairo-Variable.ttf
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

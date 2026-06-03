@@ -4,7 +4,7 @@ import 'package:bakasa_web/services/order_pricing.dart';
 import 'package:bakasa_web/services/promo_code_service.dart';
 import 'package:bakasa_web/theme/bakasa_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:bakasa_web/theme/app_fonts.dart';
 
 /// Promo entry + apply flow for the order form (Firestore-backed).
 class PromoCodePanel extends StatelessWidget {
@@ -75,7 +75,7 @@ class PromoCodePanel extends StatelessWidget {
               const SizedBox(width: 10),
               Text(
                 l10n.promoCode,
-                style: GoogleFonts.orbitron(
+                style: appDisplayFont(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
@@ -140,7 +140,7 @@ class PromoCodePanel extends StatelessWidget {
                       )
                     : Text(
                         l10n.apply,
-                        style: GoogleFonts.exo2(fontWeight: FontWeight.w700),
+                        style: appBodyFont(fontWeight: FontWeight.w700),
                       ),
               ),
             ],
@@ -149,7 +149,7 @@ class PromoCodePanel extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               inlineError!,
-              style: GoogleFonts.exo2(
+              style: appBodyFont(
                 fontSize: 12.5,
                 color: Colors.redAccent.shade100,
                 height: 1.3,
@@ -170,7 +170,7 @@ class PromoCodePanel extends StatelessWidget {
                 Expanded(
                   child: Text.rich(
                     TextSpan(
-                      style: GoogleFonts.exo2(
+                      style: appBodyFont(
                         fontSize: 13,
                         color: Colors.white,
                         height: 1.3,
@@ -209,7 +209,7 @@ class PromoCodePanel extends StatelessWidget {
                   onPressed: onClear,
                   child: Text(
                     l10n.remove,
-                    style: GoogleFonts.exo2(fontWeight: FontWeight.w700),
+                    style: appBodyFont(fontWeight: FontWeight.w700),
                   ),
                 ),
               ],
@@ -223,7 +223,7 @@ class PromoCodePanel extends StatelessWidget {
           const SizedBox(height: 14),
           Text(
             l10n.collectorBoxPrice,
-            style: GoogleFonts.orbitron(
+            style: appDisplayFont(
               fontSize: 13,
               fontWeight: FontWeight.w700,
               color: BakasaColors.textMuted,
@@ -259,7 +259,7 @@ class _PriceSummary extends StatelessWidget {
         children: [
           Text(
             '$cur ',
-            style: GoogleFonts.orbitron(
+            style: appDisplayFont(
               fontSize: 16,
               fontWeight: FontWeight.w600,
               color: BakasaColors.textMuted,
@@ -267,7 +267,7 @@ class _PriceSummary extends StatelessWidget {
           ),
           Text(
             '$base',
-            style: GoogleFonts.orbitron(
+            style: appDisplayFont(
               fontSize: 28,
               fontWeight: FontWeight.w800,
               color: BakasaColors.gold,
@@ -279,7 +279,7 @@ class _PriceSummary extends StatelessWidget {
             Expanded(
               child: Text(
                 l10n.promoNoPercent,
-                style: GoogleFonts.exo2(
+                style: appBodyFont(
                   fontSize: 11.5,
                   color: BakasaColors.textMuted,
                   height: 1.25,
@@ -302,7 +302,7 @@ class _PriceSummary extends StatelessWidget {
           children: [
             Text(
               '$cur ',
-              style: GoogleFonts.orbitron(
+              style: appDisplayFont(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: BakasaColors.textMuted,
@@ -310,7 +310,7 @@ class _PriceSummary extends StatelessWidget {
             ),
             Text(
               '$base',
-              style: GoogleFonts.orbitron(
+              style: appDisplayFont(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
                 color: BakasaColors.textMuted,
@@ -328,7 +328,7 @@ class _PriceSummary extends StatelessWidget {
             ),
             Text(
               ' $cur ',
-              style: GoogleFonts.orbitron(
+              style: appDisplayFont(
                 fontSize: 17,
                 fontWeight: FontWeight.w700,
                 color: BakasaColors.neonCyan,
@@ -336,7 +336,7 @@ class _PriceSummary extends StatelessWidget {
             ),
             Text(
               '$finalAmt',
-              style: GoogleFonts.orbitron(
+              style: appDisplayFont(
                 fontSize: 28,
                 fontWeight: FontWeight.w800,
                 color: BakasaColors.gold,
@@ -349,7 +349,7 @@ class _PriceSummary extends StatelessWidget {
           save > 0
               ? l10n.youSave(cur, save, pct, codeId)
               : l10n.percentOffApplied(pct, codeId),
-          style: GoogleFonts.exo2(
+          style: appBodyFont(
             fontSize: 12.5,
             color: BakasaColors.textMuted,
             height: 1.35,
